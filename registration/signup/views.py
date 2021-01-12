@@ -23,7 +23,7 @@ def register(request):
         user.save()
         return JsonResponse({'message': 'User Created Successfully'})
     else:
-        return JsonResponse({'message': 'Password Do not Match'})
+        return JsonResponse({'message': 'Password Do not Match or Password is less than 8 characters'})
 
 @csrf_exempt
 def login(request):
@@ -35,7 +35,12 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            return JsonResponse({'message': 'Logged In'})
+            return JsonResponse({
+                'username': user.username,
+                'name': user.first_name,
+                'lastname': user.last_name,
+                'email': user.email
+            })
         else:
             return JsonResponse({'message': 'Invalid Credentials'})
 
